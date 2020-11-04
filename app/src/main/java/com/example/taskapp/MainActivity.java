@@ -3,7 +3,9 @@ package com.example.taskapp;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.taskapp.utils.Prefs;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,12 +26,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initNavController();
+        Prefs prefs = new Prefs(this);
+        if (!prefs.isShown()) {
+            navController.navigate(R.id.navigation_home);
+        }
+        if (FirebaseAuth.getInstance().getCurrentUser() == null){
+            navController.navigate(R.id.boardFragment);
+        }
     }
 
     private void initNavController() {
         final BottomNavigationView navView = findViewById(R.id.nav_view);
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
+                R.id.navigation_home, R.id.navigation_dashboard,
+                R.id.navigation_notifications,
+                R.id.profileFragment)
                 .build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -41,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 list.add(R.id.navigation_home);
                 list.add(R.id.navigation_dashboard);
                 list.add(R.id.navigation_notifications);
+                list.add(R.id.profileFragment);
                 if (list.contains(destination.getId())){
                     navView.setVisibility(View.VISIBLE);
                 }else {

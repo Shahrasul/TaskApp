@@ -10,6 +10,8 @@
    <EditText
        android:id="@+id/editText"
        android:layout_width="match_parent"
+       android:background="@drawable/rect_rounded_stroke"
+       android:padding="8dp"
        android:hint="Введите задачку"
        android:layout_height="wrap_content"/>
     <Button
@@ -18,5 +20,11 @@
         android:layout_height="wrap_content"
         android:text="Save"
         android:layout_marginTop="16dp"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_button_gradient"
+        android:text="Stop"/>
 
 </LinearLayout>
