@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.NavigatorProvider;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.taskapp.R;
+import com.example.taskapp.utils.Prefs;
 
 public class ProfileFragment extends Fragment {
     private TextView textView;
@@ -36,9 +38,12 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.findViewById(R.id.text_name).setOnClickListener(new View.OnClickListener() {
+         textView = view.findViewById(R.id.text_name);
+         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                NavController navController = Navigation.findNavController(requireActivity(),R.id.nav_host_fragment);
+                navController.navigate(R.id.editFragment);
 
             }
         });
@@ -57,5 +62,11 @@ public class ProfileFragment extends Fragment {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        textView.setText(new Prefs(requireContext()).getString());
     }
 }

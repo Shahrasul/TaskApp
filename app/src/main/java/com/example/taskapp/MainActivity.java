@@ -21,16 +21,16 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
     private AppBarConfiguration appBarConfiguration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initNavController();
         Prefs prefs = new Prefs(this);
-        if (!prefs.isShown()) {
+        if (prefs.isShown()) {
             navController.navigate(R.id.navigation_home);
-        }
-        if (FirebaseAuth.getInstance().getCurrentUser() == null){
+        } else {
             navController.navigate(R.id.boardFragment);
         }
     }
@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
                 list.add(R.id.navigation_dashboard);
                 list.add(R.id.navigation_notifications);
                 list.add(R.id.profileFragment);
-                if (list.contains(destination.getId())){
+                if (list.contains(destination.getId())) {
                     navView.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     navView.setVisibility(View.GONE);
                 }
             }
@@ -65,6 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        return NavigationUI.navigateUp(navController,appBarConfiguration) || super.onSupportNavigateUp();
+        return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
 }

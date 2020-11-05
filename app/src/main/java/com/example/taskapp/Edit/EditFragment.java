@@ -40,7 +40,7 @@ public class EditFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         editText = view.findViewById(R.id.edit_name);
         button = view.findViewById(R.id.btn_edit);
-        String text = prefs.toString();
+        String text = prefs.getString();
         editText.setText(text);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,4 +59,5 @@ public class EditFragment extends Fragment {
         NavController navController = Navigation.findNavController(requireActivity(),R.id.nav_host_fragment);
         navController.navigateUp();
     }
+
 }

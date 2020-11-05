@@ -1,19 +1,21 @@
 package com.example.taskapp.auth;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.taskapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,6 +31,8 @@ import java.util.concurrent.TimeUnit;
 
 public class PhoneFragment extends Fragment {
     private EditText editPhone;
+    private ProgressBar progressBar;
+    private LinearLayout lg;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
 
     @Override
@@ -41,10 +45,14 @@ public class PhoneFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         editPhone = view.findViewById(R.id.editPhone);
+        progressBar = view.findViewById(R.id.progress_bar);
+        lg = view.findViewById(R.id.ph);
         view.findViewById(R.id.btnContinue).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 requestSms();
+                progressBar.setVisibility(View.VISIBLE);
+                lg.setVisibility(View.GONE);
             }
         });
         setCallbacks();
@@ -54,7 +62,7 @@ public class PhoneFragment extends Fragment {
         callbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                Log.e("Phone","onVerificationCompleted ");
+                Log.e("Phone", "onVerificationCompleted ");
                 signIn(phoneAuthCredential);
             }
 
@@ -69,12 +77,14 @@ public class PhoneFragment extends Fragment {
     private void signIn(PhoneAuthCredential phoneAuthCredential) {
         FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @SuppressLint("ShowToast")
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             close();
-                        }
-                        else {
+                            progressBar.setVisibility(View.GONE);
+                            lg.setVisibility(View.GONE);
+                        } else {
                             Toast.makeText(requireContext(), "Ошибка авторизации", Toast.LENGTH_SHORT);
 
                         }
@@ -84,7 +94,7 @@ public class PhoneFragment extends Fragment {
     }
 
     private void requestSms() {
-        String phone = editPhone.getText().toString();
+        String phone = editPhone.getText().toString().trim();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(phone)
@@ -95,8 +105,12 @@ public class PhoneFragment extends Fragment {
         PhoneAuthProvider.verifyPhoneNumber(options);
 
     }
+
     private void close() {
-        NavController navController = Navigation.findNavController(requireActivity(),R.id.nav_host_fragment);
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.getCurrentUser();
+        Toast.makeText(getContext(), "Вы авторизовались", Toast.LENGTH_SHORT).show();
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         navController.navigateUp();
     }
 

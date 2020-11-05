@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/ic_photka"
     tools:context=".ui.profile.ProfileFragment">
 
@@ -16,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="bottom"
-            android:text="Follow" />
+            android:text="Follow"
+            style="@style/ButtonStyle"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -90,36 +92,55 @@
             android:id="@+id/text_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="150dp"
+            android:layout_marginLeft="140dp"
             android:layout_marginTop="30dp"
-            android:hint="Your name" />
+            android:hint="Your name"
+            android:textSize="20dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="155dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="55dp"
             android:drawableStart="@drawable/ic_location_on_24"
-            android:text="India"
+            android:text="Kyrgyzstan"
             android:textSize="17dp" />
     </androidx.cardview.widget.CardView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="150dp"
-            android:layout_marginLeft="130dp"
-
-            android:src="@drawable/ic_add" />
+            android:layout_marginTop="305dp"
+            android:layout_marginLeft="235dp"
+            android:src="@drawable/ic_message_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="150dp"
-        android:layout_marginLeft="190dp"
+        android:layout_marginTop="305dp"
+        android:layout_marginLeft="105dp"
+       android:src="@drawable/ic_add"
         />
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:innerRadius="0dp"
+        android:shape="ring"
+        app:cardCornerRadius="75dp"
+        android:layout_marginTop="295dp"
+        android:layout_marginLeft="165dp"
+        >
+
+        <ImageView
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_photka" />
+
+
+    </androidx.cardview.widget.CardView>
+
 
 
 
