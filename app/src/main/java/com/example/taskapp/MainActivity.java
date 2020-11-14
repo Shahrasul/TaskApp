@@ -1,26 +1,30 @@
 package com.example.taskapp;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-
-import com.example.taskapp.utils.Prefs;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.taskapp.ui.home.HomeFragment;
+import com.example.taskapp.utils.Prefs;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
     private AppBarConfiguration appBarConfiguration;
+    boolean sort = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,5 +70,46 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home, menu);
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_sort:
+                if (sort) {
+                    Fragment navHost = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+                    assert navHost != null;
+                    ((HomeFragment) navHost.getChildFragmentManager().getFragments().get(0)).sortByABC();
+                    sort = false;
+                } else {
+                    Fragment navHost = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+                    assert navHost != null;
+                    ((HomeFragment) navHost.getChildFragmentManager().getFragments().get(0)).initialList();
+                    sort = true;
+                }
+                return true;
+            case R.id.item_time:
+                if (sort) {
+                    Fragment navHost = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+                    assert navHost != null;
+                    ((HomeFragment) navHost.getChildFragmentManager().getFragments().get(0)).sortByTime();
+                    sort = false;
+                } else {
+                    Fragment navHost = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+                    assert navHost != null;
+                    ((HomeFragment) navHost.getChildFragmentManager().getFragments().get(0)).initialList();
+                    sort = true;
+                }
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -50,12 +50,29 @@ public class PhoneFragment extends Fragment {
         view.findViewById(R.id.btnContinue).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                requestSms();
                 progressBar.setVisibility(View.VISIBLE);
                 lg.setVisibility(View.GONE);
+//                signInA();
+                requestSms();
             }
         });
         setCallbacks();
+    }
+    private void signInA(){
+        FirebaseAuth.getInstance().signInAnonymously()
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            close();
+                        }else {
+                            task.getException().printStackTrace();
+                            Toast.makeText(requireContext(),"Ошибка авторизации", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+
+                    }
+                });
     }
 
     private void setCallbacks() {

@@ -3,13 +3,31 @@ package com.example.taskapp.models;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
+
 @Entity
 
 public class Task implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private long id;
+    @SerializedName("title")
     private String title;
+    private String firebaseId;
+
+    public String getFirebaseId() {
+        return firebaseId;
+    }
+
+    public void setFirebaseId(String firebaseId) {
+        this.firebaseId = firebaseId;
+    }
+
+    public Task() {
+    }
+
+    @SerializedName("createdAt")
     private String createdAt;
 
     public String getTitle() {

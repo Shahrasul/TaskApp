@@ -1,11 +1,14 @@
-package com.example.taskapp.ui.home;
+package com.example.taskapp.ui.dashboard;
 
+import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.taskapp.Interfaces.OnItemClickListener;
@@ -15,38 +18,29 @@ import com.example.taskapp.models.Task;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
+public class DashTaskAdapter extends RecyclerView.Adapter<DashTaskAdapter.ViewHolder> {
 
     private List<Task> list = new ArrayList<>();
+
+    Task task;
     private OnItemClickListener onItemClickListener;
 
-    public OnItemClickListener getOnItemClickListener() {
-        return onItemClickListener;
+    public void addItem(Task task) {
+        list.add(0, task);
+        notifyItemInserted(0);
     }
 
-    public OnItemClickListener getOnItemLongClickListener() {
-        return onItemLongClickListener;
-    }
-
-    public void setOnItemLongClickListener(OnItemClickListener onItemLongClickListener) {
-        this.onItemLongClickListener = onItemLongClickListener;
-    }
-
-    private OnItemClickListener onItemLongClickListener;
-
-    public TaskAdapter(List<Task> list) {
-        this.list = list;
-    }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_task, parent, false);
+    public DashTaskAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dash_list_item, parent, false);
         return new ViewHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DashTaskAdapter.ViewHolder holder, int position) {
         holder.bind(list.get(position));
     }
 
@@ -55,40 +49,36 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         return list.size();
     }
 
-    public void addItem(Task task) {
-        list.add(0, task);
-        notifyItemInserted(0);
-        notifyDataSetChanged();
-    }
-
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+
     }
 
     public Task getItem(int pos) {
         return list.get(pos);
     }
 
+
     public void removeItem(int pos) {
         list.remove(pos);
         notifyItemRemoved(pos);
-        notifyDataSetChanged();
     }
 
     public void addList(List<Task> list) {
         this.list.clear();
-        this.list.addAll(0, list);
+        this.list.addAll(list);
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textTitle, createdAt;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView textTitle;
+        TextView textDate;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            createdAt = itemView.findViewById(R.id.createdAt);
-            textTitle = itemView.findViewById(R.id.text_task_title);
+            textTitle = itemView.findViewById(R.id.list_dash_text);
+            textDate = itemView.findViewById(R.id.list_dash_date);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -99,15 +89,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 @Override
                 public boolean onLongClick(View view) {
                     onItemClickListener.onItemLongClick(getAdapterPosition());
-                    return false;
+                    return true;
                 }
             });
         }
 
         public void bind(Task task) {
+            Log.e("TAG",task.getTitle());
             textTitle.setText(task.getTitle());
-            createdAt.setText(task.getCreatedAt());
-
+            textDate.setText(task.getCreatedAt());
         }
     }
 }
+

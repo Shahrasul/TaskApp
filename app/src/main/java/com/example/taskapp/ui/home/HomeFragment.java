@@ -4,6 +4,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,6 +33,8 @@ public class HomeFragment extends Fragment {
     private TaskAdapter adapter;
     public List<Task> taskList = new ArrayList<>();
     private Task task;
+    private NavController navController;
+    boolean sort = false;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -54,12 +59,12 @@ public class HomeFragment extends Fragment {
         //  }
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void OnItemClick(int pos) {
+            public void onItemClick(int pos) {
 //                Toast.makeText(requireContext(), taskList.get(pos).getTitle() + " ", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void OnItemLongClick(final int pos) {
+            public void onItemLongClick(final int pos) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Удаление");
                 builder.setMessage("Удалить элемент списка?");
@@ -143,5 +148,25 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadData();
+    }
+
+    public void sortByABC() {
+        taskList.clear();
+        taskList.addAll(App.getDatabase().taskDao().getAllSorted());
+        adapter.notifyDataSetChanged();
+
+    }
+
+    public void initialList() {
+        taskList.clear();
+        taskList.addAll(App.getDatabase().taskDao().getAll());
+        adapter.notifyDataSetChanged();
+    }
+
+    public void sortByTime() {
+        taskList.clear();
+        taskList.addAll(App.getDatabase().taskDao().getAllDateSorted());
+        adapter.notifyDataSetChanged();
+
     }
 }

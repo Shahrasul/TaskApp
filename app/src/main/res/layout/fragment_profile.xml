@@ -133,13 +133,23 @@
         >
 
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_gravity="center"
             android:background="@drawable/ic_photka" />
 
 
+
     </androidx.cardview.widget.CardView>
+    <ProgressBar
+        style="@android:style/Widget.Holo.ProgressBar.Horizontal"
+        android:id="@+id/progressProcent"
+        android:progress="50"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        />
 
 
 

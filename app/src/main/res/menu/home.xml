@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_sort"
+        app:showAsAction="ifRoom"
+        android:title="Sort by alphabet"
+        android:icon="@drawable/ic_sort_by_alpha_24"
+        />
+    <item
+        android:id="@+id/item_time"
+        android:icon="@drawable/ic_access_time_24"
+        android:title="Sort by time"
+        app:showAsAction="ifRoom"/>
+
+</menu>
